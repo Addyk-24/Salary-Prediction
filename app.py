@@ -45,7 +45,7 @@ X_train,X_test,y_train,y_test = train_test_split(X, y, test_size=0.2, random_sta
 
 input_model = model()
 
-model = input_model.svr
+model = input_model.xgb
 
 if model == input_model.rfr:
     model = RandomForestRegressor(n_estimators=100,random_state=42)
@@ -54,7 +54,7 @@ elif model == input_model.svr:
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
-    
+
     model = SVR()
     model.fit(X_train,y_train)
 elif model == input_model.knn:

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List,Optional
 import pandas as pd
 model = joblib.load('salary_prediction_model.pkl')
@@ -9,9 +10,20 @@ model = joblib.load('salary_prediction_model.pkl')
 
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "Welcome to the Salary Prediction App!"}
+# Allow frontend origin (adjust as needed)
+app.add_middleware(
+    CORSMiddleware,
+    # allow_origins=["*"],  # Replace "*" with your frontend origin in production
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# @app.get("/")
+# def root():
+#     return {"message": "Welcome to the Salary Prediction App!"}
 
 
 @app.get("/predict")
