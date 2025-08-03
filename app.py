@@ -6,6 +6,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
+from xgboost import XGBRegressor
 from sklearn.metrics import r2_score
 
 
@@ -46,6 +50,11 @@ model = input_model.rfr
 if model == input_model.rfr:
     model = RandomForestRegressor(n_estimators=100,random_state=42)
     model.fit(X_train,y_train)
+elif model == input_model.svr:
+    model = SVR()
+    model.fit(X_train,y_train)
+elif model == input_model.knn:
+    model = K
 
 
 y_pred = model.predict(X_test)
