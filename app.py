@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder,StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
@@ -45,12 +45,15 @@ X_train,X_test,y_train,y_test = train_test_split(X, y, test_size=0.2, random_sta
 
 input_model = model()
 
-model = input_model.rfr
+model = input_model.svr
 
 if model == input_model.rfr:
     model = RandomForestRegressor(n_estimators=100,random_state=42)
     model.fit(X_train,y_train)
 elif model == input_model.svr:
+    sc = StandardScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
     
     model = SVR()
     model.fit(X_train,y_train)
