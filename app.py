@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from fastapi import FastAPI
 import pandas as pd
 import numpy as np
 import joblib
@@ -38,9 +37,6 @@ X = np.array(ct_train.fit_transform(X))
 
 print("training model...")
 
-
-
-
 X_train,X_test,y_train,y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 input_model = model()
@@ -58,3 +54,5 @@ prediction = r2_score(y_test,y_pred)
 
 print("Model Accuracy: ",prediction)
 
+model_path = 'salary_prediction_model.pkl'
+joblib.dump(model,model_path)
