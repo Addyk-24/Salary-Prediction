@@ -51,10 +51,20 @@ if model == input_model.rfr:
     model = RandomForestRegressor(n_estimators=100,random_state=42)
     model.fit(X_train,y_train)
 elif model == input_model.svr:
+    
     model = SVR()
     model.fit(X_train,y_train)
 elif model == input_model.knn:
-    model = K
+    model = KNeighborsRegressor(n_neighbors=10)
+    model.fit(X_train,y_train)
+elif model == input_model.dt:
+    model = DecisionTreeRegressor(random_state=42)
+    model.fit(X_train,y_train)
+elif model == input_model.xgb:
+    model = XGBRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train,y_train)
+else:
+    raise ValueError("Invalid Model Selected")
 
 
 y_pred = model.predict(X_test)
