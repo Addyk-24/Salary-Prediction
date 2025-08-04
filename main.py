@@ -22,9 +22,9 @@ app.add_middleware(
 )
 
 
-# @app.get("/")
-# def root():
-#     return {"message": "Welcome to the Salary Prediction App!"}
+@app.get("/")
+def root():
+    return {"message": "Welcome to the Salary Prediction App!"}
 
 class SalaryInput(BaseModel):
     Age : int 
