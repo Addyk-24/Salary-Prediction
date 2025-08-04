@@ -8,13 +8,14 @@ model = joblib.load('salary_prediction_model.pkl')
 
 
 
+
 app = FastAPI()
 
 # Allow frontend origin (adjust as needed)
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # Replace "*" with your frontend origin in production
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],  # Replace "*" with your frontend origin in production
+    # allow_origins=["http://127.0.0.1:8000/predict"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,28 +26,31 @@ app.add_middleware(
 # def root():
 #     return {"message": "Welcome to the Salary Prediction App!"}
 
-
-@app.get("/predict")
-def predict_salary(BaseModel):
+class SalaryInput(BaseModel):
     Age : int 
-    Gender : int
+    Gender : str
     Department : str
     Job_Title : str
     Experience_Years : int
-    Education_Level : int
+    Education_Level : str
     Location : str
+    
 
-    input_data = pd.DataFrame({
-        'Age': Age,
-        'Gender' : Gender,
-        'Department' : Department,
-        'Job_Title' : Job_Title,
-        'Experience_Years' : Experience_Years,
-        'Education_Level' : Education_Level,
-        'Location' : Location,
-    })
-    prediction = model.predict(input_data)
+@app.post("/predict")
+def predict_salary(input_data: SalaryInput):
+    input = pd.DataFrame([input_data.model_dump()])
+    prediction = model.predict(input)
     return {"predicted_salary": prediction[0]}
 
     
 
+
+# {
+#   "Age": 25,
+#   "Gender": "Male",
+#   "Department": "Engineer",
+#   "Job_Title": "Ai engineer",
+#   "Experience_Years": 3,
+#   "Education_Level": "MASTERS",
+#   "Location": "SF"
+# }

@@ -90,117 +90,60 @@ async function handleFormSubmit(event) {
     // Get form data
     const formData = new FormData(predictionForm);
     const data = {};
-    
     for (let [key, value] of formData.entries()) {
         data[key] = value;
     }
-    
+
     // Validate form
     const errors = validateForm(data);
-    
     if (errors.length > 0) {
         showToast(errors[0], 'error');
         return;
     }
-    
+
+    // Prepare data for backend (convert types as needed)
+    const payload = {
+        Age: parseInt(data.age),
+        Gender: data.gender, 
+        Department: data.department,
+        Job_Title: data.job_title,
+        Experience_Years: parseInt(data.experience_years),
+        Education_Level: data.education_level,
+        Location: data.location
+    };
+
     // Show loading state
     predictBtn.disabled = true;
     btnText.classList.add('hidden');
     btnLoading.classList.remove('hidden');
-    
+
     try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Generate mock prediction
-        const baseSalary = generateSalaryPrediction(data);
-        
-        // Show success message with prediction
-        showToast(`Predicted salary: $${baseSalary.toLocaleString()} annually`, 'success');
-        
-        // Reset form
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+        showToast(`Predicted salary: $${Number(result.predicted_salary).toLocaleString()} annually`, 'success');
         predictionForm.reset();
-        
     } catch (error) {
         showToast('An error occurred while processing your request', 'error');
         console.error('Prediction error:', error);
     } finally {
-        // Reset button state
         predictBtn.disabled = false;
         btnText.classList.remove('hidden');
         btnLoading.classList.add('hidden');
     }
 }
 
-// Mock Salary Prediction Algorithm
-function generateSalaryPrediction(data) {
-    // Base salary mapping by department
-    const departmentBase = {
-        'engineering': 90000,
-        'data': 85000,
-        'product': 80000,
-        'design': 70000,
-        'marketing': 65000,
-        'sales': 60000,
-        'finance': 75000,
-        'hr': 60000,
-        'operations': 55000,
-        'other': 50000
-    };
-    
-    // Education multipliers
-    const educationMultiplier = {
-        'high-school': 0.8,
-        'associate': 0.9,
-        'bachelor': 1.0,
-        'master': 1.2,
-        'phd': 1.4,
-        'other': 0.95
-    };
-    
-    // Location multipliers (simplified)
-    const locationMultipliers = {
-        'san francisco': 1.6,
-        'new york': 1.5,
-        'seattle': 1.4,
-        'boston': 1.3,
-        'austin': 1.2,
-        'chicago': 1.1,
-        'denver': 1.05,
-        'atlanta': 1.0,
-        'default': 0.9
-    };
-    
-    let baseSalary = departmentBase[data.department] || departmentBase['other'];
-    
-    // Apply experience multiplier
-    const experienceYears = parseInt(data.experience_years);
-    const experienceMultiplier = Math.min(1 + (experienceYears * 0.05), 2.5);
-    baseSalary *= experienceMultiplier;
-    
-    // Apply education multiplier
-    baseSalary *= educationMultiplier[data.education_level] || 1;
-    
-    // Apply location multiplier
-    const location = data.location.toLowerCase();
-    let locationMultiplier = locationMultipliers['default'];
-    
-    for (const [city, multiplier] of Object.entries(locationMultipliers)) {
-        if (location.includes(city)) {
-            locationMultiplier = multiplier;
-            break;
-        }
-    }
-    
-    baseSalary *= locationMultiplier;
-    
-    // Add some randomness (±10%)
-    const randomFactor = 0.9 + (Math.random() * 0.2);
-    baseSalary *= randomFactor;
-    
-    // Round to nearest thousand
-    return Math.round(baseSalary / 1000) * 1000;
-}
+
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
