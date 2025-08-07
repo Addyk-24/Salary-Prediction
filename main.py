@@ -11,6 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 # Load the pre-trained model
 model = joblib.load('salary_prediction_model.pkl')
+encoder = joblib.load('encoder.pkl')
 
 
 
@@ -50,13 +51,9 @@ def predict_salary(input_data: SalaryInput):
     num_data = input.select_dtypes(include=['number'])
 
     categorical_cols = cat_data.columns.tolist()
-    ct_train = ColumnTransformer(
-        transformers=[
-            ('encoder', OneHotEncoder(sparse_output=False, handle_unknown='ignore'), categorical_cols),
-        ],
-        remainder='passthrough'
-    )
-    input = np.array(ct_train.fit_transform(input))
+    
+
+    input = np.array(encoder.transform(input))
     print(input)
     prediction = model.predict(input)
     return {"predicted_price": float(prediction[0])}
