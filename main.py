@@ -5,6 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List,Optional
 import pandas as pd
 import numpy as np
+import os
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+
+# Load the pre-trained model
 model = joblib.load('salary_prediction_model.pkl')
 
 
@@ -28,6 +33,7 @@ def root():
     return {"message": "Welcome to the Salary Prediction App!"}
 
 class SalaryInput(BaseModel):
+    Name: str
     Age : int 
     Gender : str
     Department : str
@@ -40,9 +46,8 @@ class SalaryInput(BaseModel):
 @app.post("/predict")
 def predict_salary(input_data: SalaryInput):
     input = pd.DataFrame([input_data.model_dump()])
-    prediction = model.predict(input)
-    cat_data = X.select_dtypes(include=['object','category'])
-    num_data = X.select_dtypes(include=['number'])
+    cat_data = input.select_dtypes(include=['object','category'])
+    num_data = input.select_dtypes(include=['number'])
 
     categorical_cols = cat_data.columns.tolist()
     ct_train = ColumnTransformer(
@@ -51,13 +56,16 @@ def predict_salary(input_data: SalaryInput):
         ],
         remainder='passthrough'
     )
-    X = np.array(ct_train.fit_transform(X))
+    input = np.array(ct_train.fit_transform(input))
+    print(input)
+    prediction = model.predict(input)
     return {"predicted_price": float(prediction[0])}
 
     
 
 
 # {
+#    "Name": "Addy",
 #   "Age": 25,
 #   "Gender": "Male",
 #   "Department": "Engineer",
