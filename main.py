@@ -34,6 +34,7 @@ def root():
     return {"message": "Welcome to the Salary Prediction App!"}
 
 class SalaryInput(BaseModel):
+    Employee_ID: int
     Name: str
     Age : int 
     Gender : str
@@ -47,13 +48,13 @@ class SalaryInput(BaseModel):
 @app.post("/predict")
 def predict_salary(input_data: SalaryInput):
     input = pd.DataFrame([input_data.model_dump()])
-    cat_data = input.select_dtypes(include=['object','category'])
-    num_data = input.select_dtypes(include=['number'])
+    # cat_data = input.select_dtypes(include=['object','category'])
+    # num_data = input.select_dtypes(include=['number'])
 
-    categorical_cols = cat_data.columns.tolist()
+    # categorical_cols = cat_data.columns.tolist()
     
-
-    input = np.array(encoder.transform(input))
+    input = encoder.transform(input)
+    # input = np.array(encoder.transform(input))
     print(input)
     prediction = model.predict(input)
     return {"predicted_price": float(prediction[0])}
@@ -62,7 +63,8 @@ def predict_salary(input_data: SalaryInput):
 
 
 # {
-#    "Name": "Addy",
+#   "Employee_ID": 1,
+#   "Name": "Addy",
 #   "Age": 25,
 #   "Gender": "Male",
 #   "Department": "Engineer",
