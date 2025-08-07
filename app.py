@@ -78,3 +78,4 @@ print("Model Accuracy: ",prediction)
 
 model_path = 'salary_prediction_model.pkl'
 joblib.dump(model,model_path)
+joblib.dump(ct_train, 'encoder.pkl')
