@@ -18,10 +18,9 @@ encoder = joblib.load('encoder.pkl')
 
 app = FastAPI()
 
-# Allow frontend origin (adjust as needed)
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # Replace "*" with your frontend origin in production
+    # allow_origins=["*"],
     allow_origins=["http://127.0.0.1:3000"],    
     allow_credentials=True,
     allow_methods=["*"],
