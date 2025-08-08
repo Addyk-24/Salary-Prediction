@@ -46,12 +46,7 @@ class SalaryInput(BaseModel):
 
 @app.post("/predict")
 def predict_salary(input_data: SalaryInput):
-    input = pd.DataFrame([input_data.model_dump()])
-    # cat_data = input.select_dtypes(include=['object','category'])
-    # num_data = input.select_dtypes(include=['number'])
-
-    # categorical_cols = cat_data.columns.tolist()
-    
+    input = pd.DataFrame([input_data.model_dump()])    
     input = encoder.transform(input)
     # input = np.array(encoder.transform(input))
     print(input)
