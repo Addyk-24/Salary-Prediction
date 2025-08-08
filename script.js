@@ -103,6 +103,8 @@ async function handleFormSubmit(event) {
 
     // Prepare data for backend (convert types as needed)
     const payload = {
+        Employee_ID: parseInt(data.Employee_ID || 1),
+        Name: data.name,
         Age: parseInt(data.age),
         Gender: data.gender, 
         Department: data.department,
