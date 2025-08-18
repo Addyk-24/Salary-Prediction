@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -22,6 +22,8 @@ encoder = joblib.load('encoder.pkl')
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,8 +36,7 @@ app.add_middleware(
 
 
 @app.get("/",response_class=HTMLResponse)
-async def root(request):
-    templates = Jinja2Templates(directory="templates")
+async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
