@@ -1,4 +1,9 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
+
 from pydantic import BaseModel
 import joblib
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,9 +33,11 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def root():
-    return {"message": "Welcome to the Salary Prediction App!"}
+@app.get("/",response_class=HTMLResponse)
+async def root(request):
+    templates = Jinja2Templates(directory="templates")
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 class SalaryInput(BaseModel):
     Employee_ID: int
