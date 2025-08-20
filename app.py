@@ -43,6 +43,19 @@ print("training model...")
 
 X_train,X_test,y_train,y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+x_sc = StandardScaler()
+X_train = x_sc.fit_transform(X_train)
+X_test = x_sc.transform(X_test)
+
+y_sc = StandardScaler()
+# y_train = y_sc.fit_transform(y_train)
+# y_test = y_sc.transform(y_test)
+
+y_train_scaled = y_sc.fit_transform(y_train.values.reshape(-1, 1))
+y_test_scaled  = y_sc.transform(y_test.values.reshape(-1, 1))
+
+
+
 input_model = model()
 
 model = input_model.xgb
@@ -51,10 +64,6 @@ if model == input_model.rfr:
     model = RandomForestRegressor(n_estimators=100,random_state=42)
     model.fit(X_train,y_train)
 elif model == input_model.svr:
-    sc = StandardScaler()
-    X_train = sc.fit_transform(X_train)
-    X_test = sc.transform(X_test)
-
     model = SVR()
     model.fit(X_train,y_train)
 elif model == input_model.knn:
@@ -79,4 +88,5 @@ print("Model Accuracy: ",prediction)
 model_path = 'salary_prediction_model.pkl'
 joblib.dump(model,model_path)
 joblib.dump(ct_train, 'encoder.pkl')
-joblib.dump(sc,'sc.pkl')
+joblib.dump(x_sc,'x_sc.pkl')
+joblib.dump(y_sc,'y_sc.pkl')
