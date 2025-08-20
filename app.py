@@ -13,6 +13,12 @@ from xgboost import XGBRegressor
 from sklearn.metrics import r2_score
 
 
+class model:
+    rfr = 'Random Forest Regressor'
+    svr = 'Support Vector Regressor'
+    knn = 'K-Nearest Neighbors Regressor'
+    dt = 'Decision Tree Regressor'
+    xgb = 'XGBoost Regressor'
 
 df = pd.read_csv('Employers_data.csv')
 
@@ -20,12 +26,6 @@ X = df.drop('Salary', axis=1)
 y = df['Salary']
 
 
-class model:
-    rfr = 'Random Forest Regressor'
-    svr = 'Support Vector Regressor'
-    knn = 'K-Nearest Neighbors Regressor'
-    dt = 'Decision Tree Regressor'
-    xgb = 'XGBoost Regressor'
 
 cat_data = X.select_dtypes(include=['object','category'])
 num_data = X.select_dtypes(include=['number'])
@@ -39,21 +39,23 @@ ct_train = ColumnTransformer(
 )
 X = np.array(ct_train.fit_transform(X))
 
+
+print("Sample y before scaling:", y[:5])
+
+
+x_sc = StandardScaler()
+X_scaled = x_sc.fit_transform(X)
+
+y_sc = StandardScaler()
+y_scaled = y_sc.fit_transform(y.values.reshape(-1,1))
+
+
+print("Sample y scaled:", y_sc.transform(y.values.reshape(-1,1))[:5])
+
+
 print("training model...")
 
 X_train,X_test,y_train,y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-x_sc = StandardScaler()
-X_train = x_sc.fit_transform(X_train)
-X_test = x_sc.transform(X_test)
-
-y_sc = StandardScaler()
-# y_train = y_sc.fit_transform(y_train)
-# y_test = y_sc.transform(y_test)
-
-y_train_scaled = y_sc.fit_transform(y_train.values.reshape(-1, 1))
-y_test_scaled  = y_sc.transform(y_test.values.reshape(-1, 1))
-
 
 
 input_model = model()
@@ -90,3 +92,6 @@ joblib.dump(model,model_path)
 joblib.dump(ct_train, 'encoder.pkl')
 joblib.dump(x_sc,'x_sc.pkl')
 joblib.dump(y_sc,'y_sc.pkl')
+
+
+

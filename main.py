@@ -17,7 +17,8 @@ from sklearn.preprocessing import OneHotEncoder
 # Load the pre-trained model
 model = joblib.load('salary_prediction_model.pkl')
 encoder = joblib.load('encoder.pkl')
-y_sc = joblib.load('sc.pkl')
+y_sc = joblib.load('y_sc.pkl')
+x_sc = joblib.load('x_sc.pkl')
 
 
 
@@ -59,8 +60,12 @@ def predict_salary(input_data: SalaryInput):
     input = encoder.transform(input)
     # input = np.array(encoder.transform(input))
     print(input)
+    input = x_sc.transform(input)
     prediction = model.predict(input)
-    salary = y_sc.inverse_transform(prediction.reshape(-1,1))
+    print("Prediction (scaled):", prediction)
+    # salary = y_sc.inverse_transform(prediction.reshape(-1,1))
+    # print("Prediction after inverse:", salary)
+    salary = prediction
     return {"predicted_price": float(salary)}
 
     
