@@ -59,6 +59,7 @@ def predict_salary(input_data: SalaryInput):
     # input = np.array(encoder.transform(input))
     print(input)
     prediction = model.predict(input)
+    salary = scaler.inverse_transform(y_pred.reshape(-1,1))
     return {"predicted_price": float(prediction[0])}
 
     
