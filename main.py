@@ -65,8 +65,11 @@ def predict_salary(input_data: SalaryInput):
     print("Prediction (scaled):", prediction)
     # salary = y_sc.inverse_transform(prediction.reshape(-1,1))
     # print("Prediction after inverse:", salary)
-    salary = prediction
-    return {"predicted_price": float(salary)}
+    # prediction is likely a 2D array, e.g., [[113931.5]]
+    salary = prediction[0][0] if prediction.ndim > 1 else prediction[0]
+    salary = float(salary)  # now it's a plain Python float
+
+    return {"predicted_price": salary}
 
     
 
