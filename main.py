@@ -27,14 +27,20 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     # allow_origins=["*"],
-#     allow_origins=["http://127.0.0.1:3000"],    
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+
+# Allow your frontend origin
+origins = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins, 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/",response_class = HTMLResponse)
