@@ -133,8 +133,8 @@ async function handleFormSubmit(event) {
         }
 
         const result = await response.json();
-        showToast(`Predicted salary: $${Number(result.predicted_price).toLocaleString()} annually`, 'success');
         console.log("API result:", result);
+        showToast(`Predicted salary: $${Number(result.predicted_price).toLocaleString()} annually`, 'success');
         console.log("Predicted salary raw:", result.predicted_salary);
         // predictionForm.reset();
     } catch (error) {
