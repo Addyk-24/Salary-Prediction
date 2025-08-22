@@ -103,7 +103,7 @@ async function handleFormSubmit(event) {
 
     // Prepare data for backend (convert types as needed)
     const payload = {
-        Employee_ID: parseInt(data.Employee_ID || 1),
+        Employee_ID: parseInt(data.Employee_ID || Math.floor(Math.random() * 10000) + 1), // Generate random ID if not provided
         Name: data.name,
         Age: parseInt(data.age),
         Gender: data.gender, 
@@ -120,34 +120,53 @@ async function handleFormSubmit(event) {
     btnLoading.classList.remove('hidden');
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/predict", {
+        // First, let's try to determine the correct URL
+        const baseUrl = window.location.origin.includes('127.0.0.1') || window.location.origin.includes('localhost') 
+            ? "http://127.0.0.1:8000" 
+            : "http://localhost:8000";
+            
+        console.log('Sending request to:', baseUrl + '/predict');
+        console.log('Payload:', payload);
+
+        const response = await fetch(baseUrl + "/predict", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             body: JSON.stringify(payload)
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
+            throw new Error(`Server responded with ${response.status}: ${errorText}`);
         }
 
         const result = await response.json();
         console.log("API result:", result);
-        showToast(`Predicted salary: $${Number(result.predicted_price).toLocaleString()} annually`, 'success');
-        console.log("Predicted salary raw:", result.predicted_salary);
+        
+        // Fixed: Use the correct key from the response
+        const predictedSalary = result.predicted_price;
+        console.log("Predicted salary raw:", predictedSalary);
+        
+        showToast(`Predicted salary: $${Number(predictedSalary).toLocaleString()} annually`, 'success');
+        
+        // Uncomment the next line if you want to reset the form after successful prediction
         // predictionForm.reset();
+        
     } catch (error) {
-        showToast('An error occurred while processing your request', 'error');
         console.error('Prediction error:', error);
+        showToast(`Error: ${error.message}`, 'error');
     } finally {
         predictBtn.disabled = false;
         btnText.classList.remove('hidden');
         btnLoading.classList.add('hidden');
     }
 }
-
-
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
