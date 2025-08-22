@@ -134,7 +134,9 @@ async function handleFormSubmit(event) {
 
         const result = await response.json();
         showToast(`Predicted salary: $${Number(result.predicted_price).toLocaleString()} annually`, 'success');
-        predictionForm.reset();
+        console.log("API result:", result);
+        console.log("Predicted salary raw:", result.predicted_salary);
+        // predictionForm.reset();
     } catch (error) {
         showToast('An error occurred while processing your request', 'error');
         console.error('Prediction error:', error);
