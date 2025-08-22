@@ -28,38 +28,14 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5000",
-        "http://127.0.0.1:5000",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
-        "http://localhost",
-        "http://127.0.0.1",
-        "null",  # For file:// protocol
-        "*"  # Allow all (use carefully in production)
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=[
-        "Accept",
-        "Accept-Language",
-        "Content-Language",
-        "Content-Type",
-        "Authorization",
-        "X-Requested-With",
-        "Origin",
-        "Access-Control-Request-Method",
-        "Access-Control-Request-Headers",
-    ],
-    expose_headers=["*"],
+    allow_origins=["*"],  
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+
 
 @app.get("/",response_class = HTMLResponse)
 async def root(request: Request):
@@ -97,17 +73,7 @@ def predict_salary(input_data: SalaryInput):
 
     return {"predicted_price": salary}
 
-    
 
-if __name__ == "__main__":
-    print("🚀 Starting server...")
-    uvicorn.run(
-        app, 
-        host="127.0.0.1", 
-        port=8000, 
-        reload=True,
-        log_level="info"
-    )
 
 # {
 #   "Employee_ID": 1,
