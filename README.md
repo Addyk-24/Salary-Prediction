@@ -14,14 +14,22 @@ It uses a trained ML model to predict salaries based on input features such as e
 ## 📂 Project Structure  
 
 ```bash
-├── app/
-│   ├── main.py            # FastAPI application
-│   ├── model.pkl          # Trained ML model
-│   ├── preprocessing.py   # Data preprocessing utilities (if any)
-│   └── schemas.py         # Pydantic models for request/response
+├── models/
+│   ├── encoder.pkl        
+│   ├── salary_prediction.py   
+│   └── x_sc.pkl    
+│   └── x_sc.pkl      
+├── dataset/
+│   ├── Employers_data.csv            
+├── templates/
+│   ├── index.html            
+├── static/
+│   ├── script.js        
+│   ├── style.css   
+│── main.py            # FastAPI Integration
+│── app.py            # Model Integration
 ├── requirements.txt       # Dependencies
 ├── README.md              # Project documentation
-└── notebook.ipynb         # Model training notebook (optional)
 ```
 
 ## ⚙️ Installation  
