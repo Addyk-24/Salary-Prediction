@@ -16,10 +16,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 
 # Load the pre-trained model
-model = joblib.load('salary_prediction_model.pkl')
-encoder = joblib.load('encoder.pkl')
-y_sc = joblib.load('y_sc.pkl')
-x_sc = joblib.load('x_sc.pkl')
+model = joblib.load('./models/salary_prediction_model.pkl')
+encoder = joblib.load('./models/encoder.pkl')
+y_sc = joblib.load('./models/y_sc.pkl')
+x_sc = joblib.load('./models/x_sc.pkl')
 
 
 
@@ -67,22 +67,9 @@ def predict_salary(input_data: SalaryInput):
     print("Prediction (scaled):", prediction)
     # salary = y_sc.inverse_transform(prediction.reshape(-1,1))
     # print("Prediction after inverse:", salary)
-    # prediction is likely a 2D array, e.g., [[113931.5]]
     salary = prediction[0][0] if prediction.ndim > 1 else prediction[0]
     salary = float(salary)  # now it's a plain Python float
 
     return {"predicted_price": salary}
 
 
-
-# {
-#   "Employee_ID": 1,
-#   "Name": "Addy",
-#   "Age": 25,
-#   "Gender": "Male",
-#   "Department": "Engineer",
-#   "Job_Title": "Ai engineer",
-#   "Experience_Years": 3,
-#   "Education_Level": "MASTERS",
-#   "Location": "SF"
-# }
