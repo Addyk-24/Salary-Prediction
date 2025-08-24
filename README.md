@@ -36,7 +36,7 @@ It uses a trained ML model to predict salaries based on input features such as e
 
 1. Clone the repository  
 ```bash
-git clone https://github.com/your-username/salary-prediction-api.git
+git clone https://github.com/Addyk-24/salary-prediction-api.git
 cd salary-prediction-api
 
 python -m venv venv
