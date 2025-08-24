@@ -15,8 +15,8 @@ It uses a trained ML model to predict salaries based on input features such as e
 
 ```bash
 ├── models/
-│   ├── encoder.pkl        
-│   ├── salary_prediction.py   
+│   ├── encoder.pkl        # Encoder model
+│   ├── salary_prediction.py   # Exported Model
 │   └── x_sc.pkl    
 │   └── x_sc.pkl      
 ├── dataset/
@@ -26,10 +26,10 @@ It uses a trained ML model to predict salaries based on input features such as e
 ├── static/
 │   ├── script.js        
 │   ├── style.css   
-│── main.py            # FastAPI Integration
-│── app.py            # Model Integration
-├── requirements.txt       # Dependencies
-├── README.md              # Project documentation
+├── salary_agent/
+│   ├── main.py   # FastAPI Integration
+│   ├── app.py    # Model Integration
+
 ```
 
 ## ⚙️ Installation  
