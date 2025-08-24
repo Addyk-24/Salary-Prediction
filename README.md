@@ -36,15 +36,18 @@ It uses a trained ML model to predict salaries based on input features such as e
 
 1. Clone the repository  
 ```bash
-git clone https://github.com/Addyk-24/salary-prediction-api.git
+git clone https://github.com/Addyk-24/Salary-Prediction.git
 cd salary-prediction-api
-
+```
+```bash
 python -m venv venv
 source venv/bin/activate   # On Linux/Mac
 venv\Scripts\activate      # On Windows
-
+```
+```bash
 pip install -r requirements.txt
-
+```
+```bash
 uvicorn app.main:app
 ```
 ### 📈 Example:
@@ -76,7 +79,7 @@ Deploy on cloud (AWS/GCP/Heroku)
 
 Add more features for better accuracy
 
-## Team Member
+## Author
 Aditya Katkar
 
 ## 🤝 Contribution
