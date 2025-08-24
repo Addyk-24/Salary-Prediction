@@ -16,10 +16,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 
 # Load the pre-trained model
-model = joblib.load('./models/salary_prediction_model.pkl')
-encoder = joblib.load('./models/encoder.pkl')
-y_sc = joblib.load('./models/y_sc.pkl')
-x_sc = joblib.load('./models/x_sc.pkl')
+model = joblib.load('../models/salary_prediction_model.pkl')
+encoder = joblib.load('../models/encoder.pkl')
+y_sc = joblib.load('../models/y_sc.pkl')
+x_sc = joblib.load('../models/x_sc.pkl')
 
 
 
