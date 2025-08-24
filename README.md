@@ -45,8 +45,7 @@ venv\Scripts\activate      # On Windows
 
 pip install -r requirements.txt
 
-uvicorn app.main:app --reload
-uvicorn main:app --host localhost// --port 8000 --reload
+uvicorn app.main:app
 ```
 ### 📈 Example:
 ```
