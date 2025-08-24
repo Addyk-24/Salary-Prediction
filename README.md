@@ -50,6 +50,20 @@ pip install -r requirements.txt
 ```bash
 uvicorn app.main:app
 ```
+## 🐳Run Using Docker
+1. Build The Image
+```bash
+docker build -t salary-prediction .
+```
+2. Build The Container
+```bash
+docker run -d -p 8000:8000 salary-prediction
+```
+3. Run The Container
+```bash
+http://localhost:8000
+```
+
 ### 📈 Example:
 ```
 {
